@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import {
-    TextInput,
+    Slider,
     StyleSheet,
     Text,
-    View,
-    TouchableOpacity
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+
+import DifficultyMeter from '../ui/DifficultyMeter';
 
 import { COLOR_B_4, COLOR_B_5, COLOR_WHITE } from '../../utils/colors';
 
@@ -16,7 +19,8 @@ export default class NewDeck extends Component {
     state = {
         deck: {
             name: '',
-            description: ''
+            description: '',
+            difficulty: 0
         }
     }
 
@@ -52,12 +56,31 @@ export default class NewDeck extends Component {
                         })
                     }} />
 
-                <View style={styles.btnContainer}>
+                <Text style={styles.text}>Difficulty Level</Text>
+                <View style={[styles.rowContainer, { width: '75%' }]}>
+                    <Slider style={{ flex: 1 }} minimumValue={0} maximumValue={80} step={20}
+                        value={this.state.deck.difficulty}
+                        onValueChange={(difficulty) => {
+                            this.setState((prev) => {
+                                const prevDeck = prev.deck;
+                                return {
+                                    deck: {
+                                        ...prevDeck,
+                                        difficulty
+                                    }
+                                }
+                            });
+                        }} />
+                    <DifficultyMeter size={35} level={this.state.deck.difficulty} />
+                </View>
+
+                <View style={styles.rowContainer}>
                     <TouchableOpacity style={styles.cancelBtn} onPress={() => {
                         this.setState({
                             deck: {
                                 name: '',
-                                description: ''
+                                description: '',
+                                difficulty: 0
                             }
                         });
                     }}>
@@ -79,7 +102,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1
     },
-    btnContainer: {
+    rowContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
