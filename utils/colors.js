@@ -19,3 +19,9 @@ export const COLOR_WHITE = "#fff";
 export const COLOR_SUCCESS = "#7ee821";
 export const COLOR_FAILURE = "#ff2424";
 export const COLOR_WARNING = "#fffa48";
+
+export const COLOR_LEVEL_1 = "#2bd400";
+export const COLOR_LEVEL_2 = "#5a0";
+export const COLOR_LEVEL_3 = "#808000";
+export const COLOR_LEVEL_4 = "#bf4000";
+export const COLOR_LEVEL_5 = "#f00";
