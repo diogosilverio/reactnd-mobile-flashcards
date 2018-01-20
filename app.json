@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Flashcards",
+    "slug": "flashcards",
+    "privacy": "public",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "sdkVersion": "23.0.0"
+  }
+}
