@@ -18,6 +18,7 @@ export default class DeckItem extends Component {
                 </View>
                 <View style={styles.infoContainer}>
                     <Text style={styles.name}>{deck.name}</Text>
+                    <Text style={styles.cards}>{deck.cards.length} card(s)</Text>
                     <Text style={styles.description}>{deck.description}</Text>
                 </View>
                 <View style={styles.scoreContainer}>
@@ -54,6 +55,11 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 20,
         fontWeight: 'bold'
+    },
+    cards: {
+        fontSize: 10,
+        color: 'gray',
+        fontStyle: 'italic'
     },
     description: {
         fontSize: 15,
