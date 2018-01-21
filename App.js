@@ -7,12 +7,13 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import FlashStatusBar from './components/ui/FlashStatusBar';
 import FlashStackNavigator from './components/navigators/FlashStackNavigator';
 
+import reducers from './reducers';
 
 export default class App extends Component {
 
   render() {
 
-    const store = createStore(() => { });
+    const store = createStore(reducers);
 
     return (
       <Provider store={store}>

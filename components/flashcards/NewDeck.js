@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { container, connect } from 'react-redux';
 import {
+    Alert,
     Slider,
     StyleSheet,
     Text,
@@ -7,28 +9,77 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import DifficultyMeter from '../ui/DifficultyMeter';
 
+import { newDeck } from '../../actions';
+import { persistDeck } from '../../services';
+
 import { COLOR_B_4, COLOR_B_5, COLOR_WHITE } from '../../utils/colors';
 
-export default class NewDeck extends Component {
+class NewDeck extends Component {
 
     state = {
         deck: {
             name: '',
             description: '',
-            difficulty: 0
+            difficulty: 0,
+            cards: [],
+            won: 0,
+            lost: 0
         }
+    }
+
+    reset() {
+        this.setState({
+            deck: {
+                name: '',
+                description: '',
+                difficulty: 0
+            }
+        });
+    }
+
+    async createNewDeck() {
+        try {
+            if (this.state.deck.name.trim() === '') {
+                Alert.alert(
+                    'Required',
+                    "Deck's name is required",
+                    [{ text: 'Ok', onPress: () => { } }],
+                    { cancelable: false });
+                return;
+            }
+
+            persistDeck(this.state.deck);
+            this.props.dispatch(newDeck(this.state.deck));
+
+            const routeName = "Index";
+            const navigation = NavigationActions.navigate({ routeName });
+
+            this.props.navigation.dispatch(navigation);
+
+        } catch (e) {
+            Alert.alert(
+                'Error',
+                'Error adding a new deck to your device.',
+                [
+                    { text: 'Ok', onPress: () => { } }
+                ]);
+            console.error(e);
+        }
+        this.reset();
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <Text style={styles.text}>Name</Text>
-                <TextInput style={{ borderWidth: 0, width: '75%' }} maxLength={30} placeholder="Javascript II" value={this.state.deck.name}
+                <TextInput style={{ borderWidth: 0, width: '75%' }} maxLength={30} placeholder="Javascript II"
+                    value={this.state.deck.name}
                     onChangeText={(name) => {
                         this.setState((prev) => {
                             const prevDeck = prev.deck;
@@ -75,18 +126,10 @@ export default class NewDeck extends Component {
                 </View>
 
                 <View style={styles.rowContainer}>
-                    <TouchableOpacity style={styles.cancelBtn} onPress={() => {
-                        this.setState({
-                            deck: {
-                                name: '',
-                                description: '',
-                                difficulty: 0
-                            }
-                        });
-                    }}>
+                    <TouchableOpacity style={styles.cancelBtn} onPress={this.reset.bind(this)}>
                         <MaterialIcons name="cancel" size={40} color={COLOR_WHITE} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.saveBtn}>
+                    <TouchableOpacity style={styles.saveBtn} onPress={this.createNewDeck.bind(this)}>
                         <MaterialIcons name="done" size={40} color={COLOR_WHITE} />
                     </TouchableOpacity>
                 </View>
@@ -122,3 +165,5 @@ const styles = StyleSheet.create({
         padding: 10
     }
 })
+
+export default connect()(NewDeck);
