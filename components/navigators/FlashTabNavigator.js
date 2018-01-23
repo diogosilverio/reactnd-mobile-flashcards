@@ -14,7 +14,7 @@ export default class FlashTabNavigator extends Component {
     }
 
     render() {
-
+        
         const tabBarOptions = {
             inactiveTintColor: COLOR_B_1,
             activeTintColor: COLOR_A_1,
@@ -39,7 +39,7 @@ export default class FlashTabNavigator extends Component {
             });
 
         return (
-            <FlashTab />
+            <FlashTab screenProps={{rootNavigation: this.props.navigation}}  />
         );
     }
 

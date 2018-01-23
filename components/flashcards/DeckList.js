@@ -37,8 +37,6 @@ class DeckList extends Component {
             routeName
         });
 
-        console.log(navigation);
-
         this.props.navigation.dispatch(navigation);
     }
 
@@ -64,7 +62,7 @@ class DeckList extends Component {
             return (
                 <ScrollView style={styles.container}>
                     {this.props.decks.map((deck) => (
-                        <TouchableOpacity key={deck.name}>
+                        <TouchableOpacity key={deck.name} onPress={() => this.props.screenProps.rootNavigation.navigate('DeckDetails', { deckKey: deck.name })}>
                             <DeckItem deck={deck} />
                         </TouchableOpacity>
                     ))}
