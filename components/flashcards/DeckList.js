@@ -16,7 +16,7 @@ import DeckItem from '../ui/DeckItem';
 import * as services from '../../services';
 import * as actions from '../../actions'
 
-import { COLOR_B_4 } from '../../utils/colors';
+import { COLOR_B_4, COLOR_A_1 } from '../../utils/colors';
 
 class DeckList extends Component {
 
@@ -54,7 +54,7 @@ class DeckList extends Component {
                     <Entypo size={75} name="emoji-sad" />
                     <Text>You have no registered decks.</Text>
                     <TouchableOpacity style={styles.btnAdd} onPress={this.navigateToNewDeck.bind(this)}>
-                        <Text>Add a new deck!</Text>
+                        <Text style={styles.text}>Add a new deck!</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -80,8 +80,11 @@ const styles = StyleSheet.create({
     btnAdd: {
         backgroundColor: COLOR_B_4,
         borderRadius: 2,
-        padding: 4,
+        padding: 6,
         margin: 10
+    },
+    text: {
+        color: COLOR_A_1
     }
 })
 
