@@ -12,3 +12,21 @@ export async function loadDecks() {
     const decks = JSON.parse(await AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY));
     return decks !== null ? decks : [];
 }
+
+export async function getDeck(deckKey){
+    const decks = await loadDecks();
+    const deck = decks[deckKey];
+    return deck;
+}
+
+export async function addCardToDeck(deckKey, card){
+    const deck = await getDeck(deckKey);
+
+    if(typeof deck === 'undefined'){
+        console.warn(`Trying to fetch invalid deck: ${deckKey}`);
+        return;
+    }
+
+    deck.cards.push(card)
+    await persistDeck(deck);
+}

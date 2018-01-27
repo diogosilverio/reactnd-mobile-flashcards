@@ -1,6 +1,7 @@
 import {
     LOAD_DECKS,
-    NEW_DECK
+    NEW_DECK,
+    ADD_CARD
 } from '../actions';
 
 function decks(state = { decks: {} }, action) {
@@ -25,6 +26,21 @@ function decks(state = { decks: {} }, action) {
             return {
                 decks
             }
+        }
+        case ADD_CARD: {
+            const { card, deckKey } = action;
+            const freshDeck = decks[deckKey];
+            
+            freshDeck.cards.push(card);
+
+            const freshDecks = {
+                ...decks,
+                [deckKey]: freshDeck
+            }
+            return {
+                decks: freshDecks
+            }
+
         }
         default: {
             return state;

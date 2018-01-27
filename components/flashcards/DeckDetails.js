@@ -17,6 +17,14 @@ class DeckDetails extends Component {
         }
     }
 
+    /**
+     * Child navigate.goBack() does not re-render state.
+     * https://github.com/react-navigation/react-navigation/issues/922
+     */
+    refresher(){
+        this.setState({});
+    }
+
     render() {
         const { deck } = this.props;
         if (typeof deck === 'undefined') {
@@ -42,7 +50,7 @@ class DeckDetails extends Component {
                     <Text style={styles.cardText}>{deck.cards.length} Card(s)</Text>
                 </View>
                 <View style={styles.subContainerBtn}>
-                    <TouchableOpacity style={styles.btn}>
+                    <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate('AddCard', { deckKey: deck.name, refresher: this.refresher.bind(this) })}>
                         <Text style={styles.btnText}>Add Card</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.btn}>
