@@ -3,12 +3,18 @@ import { connect } from 'react-redux';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import CardItem from '../ui/CardItem';
 import Entypo from '@expo/vector-icons/Entypo';
+import { COLOR_B_4, COLOR_A_1 } from '../../utils/colors';
 
 class CardList extends Component {
 
     render() {
-        const { cards } = this.props;
+        const { cards, navigation } = this.props;
         const { deckKey, refresher } = this.props.navigation.state.params;
+
+        const doubleRefresher = () =>{
+            this.setState({});
+            refresher();
+        }
 
         if (cards.length === 0) {
 
@@ -16,6 +22,9 @@ class CardList extends Component {
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Entypo size={75} name="emoji-sad" />
                     <Text>You have no cards for this deck.</Text>
+                    <TouchableOpacity style={styles.btnAdd} onPress={() => navigation.navigate('AddCard', { deckKey, refresher: doubleRefresher })}>
+                        <Text style={styles.text}>Add a new card!</Text>
+                    </TouchableOpacity>
                 </View>
             );
         } else {
@@ -23,7 +32,7 @@ class CardList extends Component {
             return (
                 <ScrollView style={styles.container}>
                     {cards.map(card => (
-                        <CardItem key={card.question} card={card} deck={deckKey} refresher={refresher} />
+                        <CardItem key={card.question} card={card} deck={deckKey} refresher={refresher} rootNavigation={this.props.navigation} />
                     ))}
 
                 </ScrollView>
@@ -36,6 +45,15 @@ class CardList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    btnAdd: {
+        backgroundColor: COLOR_B_4,
+        borderRadius: 2,
+        padding: 6,
+        margin: 10
+    },
+    text: {
+        color: COLOR_A_1
     }
 });
 
