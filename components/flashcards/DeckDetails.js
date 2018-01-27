@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import DifficultyMeter from '../ui/DifficultyMeter';
 
-import { COLOR_B_4, COLOR_A_1, COLOR_B_5 } from '../../utils/colors';
+import { COLOR_B_4, COLOR_A_1, COLOR_B_5, COLOR_FAILURE } from '../../utils/colors';
 
 
 class DeckDetails extends Component {
@@ -21,7 +21,7 @@ class DeckDetails extends Component {
      * Child navigate.goBack() does not re-render state.
      * https://github.com/react-navigation/react-navigation/issues/922
      */
-    refresher(){
+    refresher() {
         this.setState({});
     }
 
@@ -48,14 +48,27 @@ class DeckDetails extends Component {
                     <View><DifficultyMeter level={deck.difficulty} size={30} /></View>
                     <Text style={styles.titleText}>{deck.name}</Text>
                     <Text style={styles.cardText}>{deck.cards.length} Card(s)</Text>
+                    <Text style={styles.description}>{deck.description}</Text>
                 </View>
                 <View style={styles.subContainerBtn}>
-                    <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate('AddCard', { deckKey: deck.name, refresher: this.refresher.bind(this) })}>
-                        <Text style={styles.btnText}>Add Card</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.btn}>
-                        <Text style={styles.btnText}>Start Quiz</Text>
-                    </TouchableOpacity>
+                    <View style={styles.subSubContainerBtn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate('AddCard', { deckKey: deck.name, refresher: this.refresher.bind(this) })}>
+                            <Text style={styles.btnText}>Add Card</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btn}>
+                            <Text style={styles.btnText}>List Cards</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.subSubContainerBtn}>
+                        <TouchableOpacity style={styles.btn}>
+                            <Text style={styles.btnText}>Start Quiz</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.subSubContainerBtn}>
+                        <TouchableOpacity style={styles.btnAlert}>
+                            <Text style={styles.btnText}>Delete Deck</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );
@@ -77,18 +90,25 @@ const styles = StyleSheet.create({
     },
     subContainerBtn: {
         flex: 1,
+        alignItems: 'flex-start'
+    },
+    subSubContainerBtn: {
+        flex: 1,
         flexDirection: 'row',
-        alignItems: 'flex-start',
-        alignContent: 'center'
     },
     btn: {
         flex: 1,
         flexDirection: 'row',
         backgroundColor: COLOR_B_4,
         borderRadius: 2,
-        padding: 4,
-        margin: 10,
-        height: 64
+        margin: 2
+    },
+    btnAlert: {
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: COLOR_FAILURE,
+        borderRadius: 2,
+        margin: 2
     },
     btnText: {
         flex: 1,
@@ -102,6 +122,10 @@ const styles = StyleSheet.create({
     },
     cardText: {
         fontSize: 20
+    },
+    description: {
+        fontSize: 25,
+        fontStyle: 'italic'
     }
 });
 
