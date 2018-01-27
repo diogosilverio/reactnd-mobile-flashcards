@@ -54,11 +54,11 @@ class DeckDetails extends Component {
             ]);
     }
 
-    shouldComponentUpdate(nextProps, nextState){
-        if(nextProps.deck === null){
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.deck === null) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -92,7 +92,7 @@ class DeckDetails extends Component {
                         <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate('AddCard', { deckKey: deck.name, refresher: this.refresher.bind(this) })}>
                             <Text style={styles.btnText}>Add Card</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate('Cards', { deckKey: deck.name, refresher: this.refresher.bind(this) })}>
                             <Text style={styles.btnText}>List Cards</Text>
                         </TouchableOpacity>
                     </View>

@@ -3,6 +3,7 @@ export const NEW_DECK = "NEW_DECK";
 export const DELETE_DECK = "DELETE_DECK";
 
 export const ADD_CARD = "ADD_CARD";
+export const DELETE_CARD = "DELETE_CARD";
 
 export function loadDecks(decks){
     return {
@@ -30,5 +31,13 @@ export function addCard(deckKey, card){
         type: ADD_CARD,
         deckKey,
         card
+    }
+}
+
+export function deleteCard(deckKey, cardName){
+    return {
+        type: DELETE_CARD,
+        deckKey,
+        cardName
     }
 }

@@ -2,7 +2,8 @@ import {
     LOAD_DECKS,
     NEW_DECK,
     ADD_CARD,
-    DELETE_DECK
+    DELETE_DECK,
+    DELETE_CARD
 } from '../actions';
 
 function decks(state = { decks: {} }, action) {
@@ -51,6 +52,16 @@ function decks(state = { decks: {} }, action) {
                 decks: freshDecks
             }
 
+        }
+        case DELETE_CARD: {
+            const { deckKey, cardName } = action;
+            const freshDecks = decks;
+
+            freshDecks[deckKey].cards = freshDecks[deckKey].cards.filter(card => card.question !== cardName);
+
+            return {
+                decks: freshDecks
+            }
         }
         default: {
             return state;

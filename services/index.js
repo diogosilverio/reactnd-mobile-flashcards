@@ -37,3 +37,10 @@ export async function addCardToDeck(deckKey, card){
     deck.cards.push(card)
     await persistDeck(deck);
 }
+
+export async function deleteCardFromDeck(deckKey, cardName){
+    const deck = await getDeck(deckKey);
+    deck.cards = deck.cards.filter(card => card.question !== cardName);
+
+    await persistDeck(deck);
+}
