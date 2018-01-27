@@ -25,7 +25,7 @@ function decks(state = { decks: {} }, action) {
             }
 
             return {
-                decks
+                decks: freshDecks
             }
         }
         case DELETE_DECK: {
