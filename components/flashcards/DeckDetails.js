@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 
 import DifficultyMeter from '../ui/DifficultyMeter';
 
+import * as actions from '../../actions';
+import * as services from '../../services';
+
 import { COLOR_B_4, COLOR_A_1, COLOR_B_5, COLOR_FAILURE } from '../../utils/colors';
 
 
@@ -23,6 +26,40 @@ class DeckDetails extends Component {
      */
     refresher() {
         this.setState({});
+    }
+
+    async deleteDeck() {
+        const { deck } = this.props;
+
+        Alert.alert(
+            'Delete deck?',
+            `Do you confirm the deletion of '${deck.name}' deck?`,
+            [
+                {
+                    text: 'Yes',
+                    onPress: async () => {
+                        try {
+                            await services.deleteDeck(deck.name);
+                            this.props.dispatch(actions.deleteDeck(deck.name));
+                            this.props.navigation.goBack();
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+                },
+                {
+                    text: 'No',
+                    onPress: () => { }
+                }
+            ]);
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.deck === null){
+            return false;
+        }
+        
+        return true;
     }
 
     render() {
@@ -65,7 +102,7 @@ class DeckDetails extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.subSubContainerBtn}>
-                        <TouchableOpacity style={styles.btnAlert}>
+                        <TouchableOpacity style={styles.btnAlert} onPress={this.deleteDeck.bind(this)}>
                             <Text style={styles.btnText}>Delete Deck</Text>
                         </TouchableOpacity>
                     </View>

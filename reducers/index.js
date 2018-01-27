@@ -1,7 +1,8 @@
 import {
     LOAD_DECKS,
     NEW_DECK,
-    ADD_CARD
+    ADD_CARD,
+    DELETE_DECK
 } from '../actions';
 
 function decks(state = { decks: {} }, action) {
@@ -27,10 +28,19 @@ function decks(state = { decks: {} }, action) {
                 decks
             }
         }
+        case DELETE_DECK: {
+            const { deckKey } = action;
+            delete decks[deckKey];
+
+            const refreshedDecks = decks;
+            return {
+                decks: refreshedDecks
+            }
+        }
         case ADD_CARD: {
             const { card, deckKey } = action;
             const freshDeck = decks[deckKey];
-            
+
             freshDeck.cards.push(card);
 
             const freshDecks = {

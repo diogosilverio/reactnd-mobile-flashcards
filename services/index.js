@@ -8,6 +8,13 @@ export async function persistDeck(deck){
     }))
 }
 
+export async function deleteDeck(deckKey){
+    let decks = await loadDecks();
+    delete decks[deckKey];
+
+    await AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(decks));
+}
+
 export async function loadDecks() {
     const decks = JSON.parse(await AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY));
     return decks !== null ? decks : [];
