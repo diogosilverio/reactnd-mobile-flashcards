@@ -11,6 +11,14 @@ import { COLOR_WHITE, COLOR_B_5 } from '../../utils/colors';
 
 class AddCard extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { deckKey } = navigation.state.params;
+
+        return {
+            title: `Adding Card to '${deckKey}' Deck`,
+        }
+    }
+
     state = {
         card: {
             question: '',

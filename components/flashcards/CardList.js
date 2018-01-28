@@ -7,11 +7,19 @@ import { COLOR_B_4, COLOR_A_1 } from '../../utils/colors';
 
 class CardList extends Component {
 
+    static navigationOptions = ({ navigation }) => {
+        const { deckKey } = navigation.state.params;
+
+        return {
+            title: `'${deckKey}' Cards`,
+        }
+    }
+
     render() {
         const { cards, navigation } = this.props;
         const { deckKey, refresher } = this.props.navigation.state.params;
 
-        const doubleRefresher = () =>{
+        const doubleRefresher = () => {
             this.setState({});
             refresher();
         }
