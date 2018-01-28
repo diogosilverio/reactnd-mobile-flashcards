@@ -97,7 +97,7 @@ class DeckDetails extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.subSubContainerBtn}>
-                        <TouchableOpacity style={styles.btn}>
+                        <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate('Quiz', { deckKey: deck.name })}>
                             <Text style={styles.btnText}>Start Quiz</Text>
                         </TouchableOpacity>
                     </View>

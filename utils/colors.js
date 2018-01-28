@@ -15,6 +15,7 @@ export const COLOR_B_6 = "#2728ff";
 export const COLOR_B_7 = "#0000fe";
 
 export const COLOR_WHITE = "#fff";
+export const COLOR_BLACK = "#000";
 
 export const COLOR_SUCCESS = "#7ee821";
 export const COLOR_FAILURE = "#ff2424";

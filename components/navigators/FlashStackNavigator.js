@@ -9,6 +9,7 @@ import DeckDetails from '../flashcards/DeckDetails';
 
 import { COLOR_A_1, COLOR_B_5 } from '../../utils/colors';
 import CardList from '../flashcards/CardList';
+import Quiz from '../flashcards/Quiz';
 
 export default class FlashStackNavigator extends Component {
 
@@ -25,6 +26,9 @@ export default class FlashStackNavigator extends Component {
             },
             Cards: {
                 screen: CardList
+            },
+            Quiz:{
+                screen: Quiz
             }
         }, {
                 navigationOptions: {
