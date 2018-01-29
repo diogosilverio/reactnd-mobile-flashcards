@@ -38,7 +38,10 @@ class NewDeck extends Component {
             deck: {
                 name: '',
                 description: '',
-                difficulty: 0
+                difficulty: 0,
+                cards: [],
+                won: 0,
+                lost: 0
             }
         });
     }
@@ -53,7 +56,7 @@ class NewDeck extends Component {
                     { cancelable: false });
                 return;
             }
-
+            
             persistDeck(this.state.deck);
             this.props.dispatch(newDeck(this.state.deck));
 
