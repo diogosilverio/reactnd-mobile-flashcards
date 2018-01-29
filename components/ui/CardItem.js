@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { deleteCardFromDeck } from '../../services';
-import { deleteCard } from '../../actions';
+import { deleteCard } from '../../actions/deck';
 import { COLOR_B_1, COLOR_WHITE, COLOR_FAILURE } from '../../utils/colors';
 
 class CardItem extends Component {

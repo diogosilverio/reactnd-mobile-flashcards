@@ -14,7 +14,7 @@ import { Entypo } from '@expo/vector-icons';
 import DeckItem from '../ui/DeckItem';
 
 import * as services from '../../services';
-import * as actions from '../../actions'
+import * as actions from '../../actions/deck'
 
 import { COLOR_B_4, COLOR_A_1 } from '../../utils/colors';
 

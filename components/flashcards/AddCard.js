@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-import { addCard } from '../../actions';
+import { addCard } from '../../actions/deck';
 import { addCardToDeck, getDeck } from '../../services';
 
 import { COLOR_WHITE, COLOR_B_5 } from '../../utils/colors';

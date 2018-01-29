@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import DifficultyMeter from '../ui/DifficultyMeter';
 
-import * as actions from '../../actions';
+import * as actions from '../../actions/deck';
 import * as services from '../../services';
 
 import { COLOR_B_4, COLOR_A_1, COLOR_B_5, COLOR_FAILURE } from '../../utils/colors';

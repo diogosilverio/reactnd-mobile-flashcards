@@ -15,7 +15,7 @@ import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import DifficultyMeter from '../ui/DifficultyMeter';
 
-import { newDeck } from '../../actions';
+import { newDeck } from '../../actions/deck';
 import { persistDeck } from '../../services';
 
 import { COLOR_B_4, COLOR_B_5, COLOR_WHITE } from '../../utils/colors';

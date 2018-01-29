@@ -5,8 +5,6 @@ export const DELETE_DECK = "DELETE_DECK";
 export const ADD_CARD = "ADD_CARD";
 export const DELETE_CARD = "DELETE_CARD";
 
-export const UPDATE_SCORE = "UPDATE_SCORE";
-
 export function loadDecks(decks){
     return {
         type: LOAD_DECKS,
@@ -41,12 +39,5 @@ export function deleteCard(deckKey, cardName){
         type: DELETE_CARD,
         deckKey,
         cardName
-    }
-}
-
-export function updateScore(scores){
-    return {
-        type: UPDATE_SCORE,
-        scores
     }
 }

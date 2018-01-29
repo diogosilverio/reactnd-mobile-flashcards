@@ -4,7 +4,7 @@ import {
     ADD_CARD,
     DELETE_DECK,
     DELETE_CARD
-} from '../actions';
+} from '../actions/deck';
 
 function decks(state = {}, action) {
     const { type } = action;

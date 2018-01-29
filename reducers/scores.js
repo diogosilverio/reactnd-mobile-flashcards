@@ -1,4 +1,4 @@
-import { UPDATE_SCORE } from '../actions';
+import { UPDATE_SCORE } from '../actions/score';
 
 function scores(state = [], action) {
     const { type } = action;
