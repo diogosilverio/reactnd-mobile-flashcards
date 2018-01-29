@@ -65,10 +65,11 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps({ decks }, props) {
+function mapStateToProps(state, props) {
+    const { decks } = state;
     const { deckKey } = props.navigation.state.params;
     const cards = decks[deckKey].cards;
-
+    
     return {
         cards
     }
