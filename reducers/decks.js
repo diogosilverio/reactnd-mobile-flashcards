@@ -2,7 +2,9 @@ import {
     LOAD_DECKS,
     NEW_DECK,
     ADD_CARD,
+    UPDATE_DECK,
     DELETE_DECK,
+    UPDATE_DECK_SCORE,
     DELETE_CARD
 } from '../actions/deck';
 
@@ -27,9 +29,23 @@ function decks(state = {}, action) {
         }
         case DELETE_DECK: {
             const { deckKey } = action;
-            
+
             const refreshedDecks = Object.assign({}, decks);
             delete refreshedDecks[deckKey];
+            return refreshedDecks;
+        }
+        case UPDATE_DECK_SCORE: {
+            const { score, deckKey } = action;
+
+            const refreshedDecks = {
+                ...decks,
+                [deckKey]: {
+                    ...decks[deckKey],
+                    won: score.won,
+                    lost: score.lost
+                }
+            }
+
             return refreshedDecks;
         }
         case ADD_CARD: {

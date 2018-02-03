@@ -52,7 +52,7 @@ class DeckList extends Component {
             return (
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Entypo size={75} name="emoji-sad" />
-                    <Text>You have no registered decks.</Text>
+                    <Text>You do not have registered decks.</Text>
                     <TouchableOpacity style={styles.btnAdd} onPress={this.navigateToNewDeck.bind(this)}>
                         <Text style={styles.text}>Add a new deck!</Text>
                     </TouchableOpacity>

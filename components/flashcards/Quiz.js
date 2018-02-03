@@ -7,6 +7,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { saveScore } from '../../services';
 
 import { COLOR_WHITE, COLOR_B_4, COLOR_A_1, COLOR_B_6, COLOR_SUCCESS, COLOR_BLACK, COLOR_FAILURE } from '../../utils/colors';
+import { UPDATE_SCORE, updateScores } from '../../actions/score';
+import { updateDeckScore } from '../../actions/deck';
 
 const ANSWER = 'A';
 const QUESTION = 'Q';
@@ -165,7 +167,9 @@ class Quiz extends Component {
             const { navigation } = this.props;
             const { deckKey } = navigation.state.params;
 
-            await saveScore(deckKey, status);
+            const result = await saveScore(deckKey, status);
+            this.props.dispatch(updateScores(result.lastScore));
+            this.props.dispatch(updateDeckScore(deckKey, result.deckScore));
             Alert.alert(
                 title,
                 message,

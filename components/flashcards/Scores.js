@@ -1,78 +1,59 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+
+import ScoreItem from '../ui/ScoreItem';
 
 import { getScores } from '../../services';
+import { loadScores } from '../../actions/score';
 
 import { COLOR_B_1 } from '../../utils/colors';
+import Entypo from '@expo/vector-icons/Entypo';
 
-export default class Scores extends Component {
+class Scores extends Component {
 
     async componentDidMount() {
         const scores = await getScores();
-        // console.log(scores);
+        this.props.dispatch(loadScores(scores));
     }
 
     render() {
-        return (
-            <ScrollView style={styles.container}>
 
-                <View style={styles.match}>
-                    <View style={styles.resultContainer}>
-                        <Text style={styles.resultText}>W</Text>
-                    </View>
-                    <View style={styles.statusContainer}>
-                        <Text style={styles.statusText}>Deck 'A' @ 10/20/2017 19:22:40</Text>
-                    </View>
-                </View>
-                <View style={styles.match}>
-                    <View style={styles.resultContainerL}>
-                        <Text style={styles.resultText}>L</Text>
-                    </View>
-                    <View style={styles.statusContainer}>
-                        <Text style={styles.statusText}>Deck 'A' @ 10/20/2017 19:22:40</Text>
-                    </View>
-                </View>
+        const { scores } = this.props;
 
-            </ScrollView>
-        );
+        if (this.props.scores === null) {
+            return (
+                <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center' }}>
+                    <ActivityIndicator size={50} />
+                </View>
+            );
+        } else if (scores.length === 0) {
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Entypo size={75} name="emoji-sad" />
+                    <Text>You have no scores.</Text>
+                </View>
+            );
+        } else {
+            return (
+                <ScrollView style={styles.container}>
+                    {scores.map(score => (<ScoreItem key={score.date} score={score} />))}
+                </ScrollView>
+            );
+        }
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    match: {
-        flex: 1,
-        flexDirection: 'row',
-        height: 64,
-        borderBottomWidth: 1,
-        borderBottomColor: COLOR_B_1
-    },
-    resultContainer: {
-        flex: 1,
-        backgroundColor: 'green',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    resultContainerL: {
-        flex: 1,
-        backgroundColor: 'red',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    resultText: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 30
-    },
-    statusContainer: {
-        flex: 4,
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        paddingLeft: 5
-    },
-    statusText: {
-        fontSize: 17
     }
 });
+
+function mapStateToProps({ scores }) {
+    return {
+        scores
+    }
+}
+
+export default connect(mapStateToProps)(Scores);

@@ -54,7 +54,24 @@ export async function getScores() {
 export async function saveScore(deck, status) {
     const scores = await getScores();
     const date = Date.now();
-    scores.push({ deck, status, date });
+    const lastScore = { deck, status, date };
+    scores.push(lastScore);
+
+    const playedDeck = await getDeck(deck);
+
+    if (status === 'W') {
+        playedDeck.won += 1;
+    } else if (status === 'L') {
+        playedDeck.lost += 1;
+    }
+
+    const deckScore = {
+        won: playedDeck.won,
+        lost: playedDeck.lost
+    }
+
+    persistDeck(playedDeck);
 
     await AsyncStorage.setItem(SCORES_STORAGE_KEY, JSON.stringify(scores));
+    return { lastScore, deckScore };
 }
