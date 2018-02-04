@@ -48,7 +48,11 @@ class NewDeck extends Component {
 
     async createNewDeck() {
         try {
-            if (this.state.deck.name.trim() === '') {
+            const { deck } = this.state;
+            const { navigation } = this.props;
+            const rootNavigation = this.props.screenProps.rootNavigation;
+
+            if (deck.name.trim() === '') {
                 Alert.alert(
                     'Required',
                     "Deck's name is required",
@@ -56,14 +60,12 @@ class NewDeck extends Component {
                     { cancelable: false });
                 return;
             }
-            
-            persistDeck(this.state.deck);
-            this.props.dispatch(newDeck(this.state.deck));
 
-            const routeName = "Index";
-            const navigation = NavigationActions.navigate({ routeName });
+            persistDeck(deck);
+            this.props.dispatch(newDeck(deck));
 
-            this.props.navigation.dispatch(navigation);
+            navigation.goBack();
+            rootNavigation.navigate('DeckDetails', { deckKey: deck.name })
 
         } catch (e) {
             Alert.alert(
