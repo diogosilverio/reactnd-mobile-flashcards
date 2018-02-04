@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
     },
     diffContainer: {
         flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     infoContainer: {
         flex: 3,
