@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Alert, Animated } from 'react-native';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -33,10 +33,13 @@ class Quiz extends Component {
     state = {
         questionIndex: 0,
         answerQuestion: ANSWER,
-        questions: []
+        questions: [],
+        done: false,
+        animationValue: new Animated.Value(1)
     }
 
     componentDidMount() {
+
         if (this.props.cards.length >= 0) {
             this.setState((prevState) => {
                 return {
@@ -48,6 +51,18 @@ class Quiz extends Component {
                     })
                 }
             })
+        }
+
+    }
+
+    componentDidUpdate() {
+        const { animationValue, done } = this.state;
+
+        if (done) {
+            Animated.sequence([
+                Animated.timing(animationValue, { duration: 200, toValue: 1.3 }),
+                Animated.spring(animationValue, { toValue: 1, friction: 5 })
+            ]).start()
         }
     }
 
@@ -66,6 +81,9 @@ class Quiz extends Component {
             case FORWARD: {
 
                 if (questionIndex >= size - 1) {
+                    this.setState(() => {
+                        lastQuestion: true
+                    })
                     return;
                 }
 
@@ -103,6 +121,7 @@ class Quiz extends Component {
 
     answer(status) {
         const { questionIndex } = this.state;
+        const size = this.state.questions.length;
 
         let refreshedQuestions = this.state.questions;
         refreshedQuestions[questionIndex].correct = status;
@@ -113,6 +132,12 @@ class Quiz extends Component {
                 answerQuestion: ANSWER
             }
         });
+
+        if (questionIndex === (size - 1)) {
+            this.done();
+        } else {
+            this.navigateQuestions(FORWARD);
+        }
     }
 
     done() {
@@ -170,12 +195,15 @@ class Quiz extends Component {
             const result = await saveScore(deckKey, status);
             this.props.dispatch(updateScores(result.lastScore));
             this.props.dispatch(updateDeckScore(deckKey, result.deckScore));
-            Alert.alert(
-                title,
-                message,
-                [{ text: 'OK', onPress: () => navigation.goBack() }],
-                { cancelable: false }
-            );
+
+            this.setState(() => {
+                return {
+                    done: true,
+                    correct: r,
+                    incorrect: w
+                }
+            })
+
         } catch (e) {
             console.log(e);
         }
@@ -185,7 +213,8 @@ class Quiz extends Component {
 
     render() {
 
-        const size = this.state.questions.length;
+        const { questions, done } = this.state;
+        const size = questions.length;
 
         if (size === 0) {
             return (
@@ -193,7 +222,46 @@ class Quiz extends Component {
                     <ActivityIndicator size={50} />
                 </View>
             );
-        } else {
+        } else if (done) {
+            const { navigation } = this.props;
+            const { deckKey } = navigation.state.params;
+
+            const { correct, incorrect, animationValue } = this.state;
+            const percent = (correct / size) * 100;
+
+            return (
+                <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center' }}>
+                    <View style={styles.resultContainer}>
+                        <Text style={styles.quizFinishedTxt}>Quiz Finished</Text>
+                        {correct > incorrect ?
+                            (
+                                <Text style={styles.wonTxt}>You won! =)</Text>
+                            )
+                            : correct < incorrect ?
+                                (
+                                    <Text style={styles.loseTxt}>You Lose! =(</Text>
+                                )
+                                :
+                                (
+                                    <Text style={styles.tieTxt}>It's a Tie =|</Text>
+                                )
+                        }
+                        <Animated.Text style={[styles.resultTxt, { transform: [{ scale: animationValue }] }]}>
+                            {percent.toFixed(0)}% Correct
+                        </Animated.Text>
+                    </View>
+                    <TouchableOpacity style={styles.btn}>
+                        <Text style={styles.btnAnswerText} onPress={() => {
+                            navigation.goBack();
+                            navigation.navigate('Quiz', { deckKey })
+                        }}>Play Again</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.btn}>
+                        <Text style={styles.btnAnswerText} onPress={() => { navigation.goBack(); }}>Go Back</Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        } else if (!done) {
 
             const { questionIndex, answerQuestion } = this.state;
             const question = this.state.questions[questionIndex];
@@ -223,9 +291,6 @@ class Quiz extends Component {
                                         <TouchableOpacity style={styles.btn} onPress={this.showAnswer.bind(this)}>
                                             <Text style={styles.btnAnswerText}>Answer</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={styles.btnDone} onPress={this.done.bind(this)}>
-                                            <Text style={styles.btnDoneText}>Done</Text>
-                                        </TouchableOpacity>
                                     </View>
                                 </View>
                             )
@@ -237,10 +302,10 @@ class Quiz extends Component {
                                     </View>
                                     <View style={styles.btnContainer}>
                                         <TouchableOpacity style={styles.btnCorrect} onPress={() => this.answer(RIGHT)}>
-                                            <Text style={styles.btnAnswerText}>Right =)</Text>
+                                            <Text style={styles.btnAnswerText}>Correct =)</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={styles.btnWrong} onPress={() => this.answer(WRONG)}>
-                                            <Text style={styles.btnDoneText}>Wrong =(</Text>
+                                            <Text style={styles.btnDoneText}>Incorrect =(</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -342,6 +407,29 @@ const styles = StyleSheet.create({
         backgroundColor: COLOR_FAILURE,
         borderRadius: 2,
         margin: 2
+    },
+    resultContainer: {
+        flex: 7,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    quizFinishedTxt: {
+        fontSize: 25
+    },
+    wonTxt: {
+        fontSize: 35,
+        color: 'green'
+    },
+    loseTxt: {
+        fontSize: 35,
+        color: 'red'
+    },
+    tieTxt: {
+        fontSize: 35,
+        color: 'gray'
+    },
+    resultTxt: {
+        fontSize: 45
     }
 });
 
