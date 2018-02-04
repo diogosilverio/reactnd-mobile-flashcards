@@ -2,9 +2,14 @@
   "expo": {
     "name": "Flashcards",
     "slug": "flashcards",
-    "privacy": "public",
+    "description": "Flashcards quiz app for Udacity React Nanodegree",
+    "icon": "https://diogosilverio.net/flashcards.png",
+    "privacy": "private",
     "version": "1.0.0",
     "orientation": "portrait",
-    "sdkVersion": "23.0.0"
+    "sdkVersion": "23.0.0",
+    "android": {
+      "package": "net.diogosilverio.flashcards"
+    }
   }
 }
