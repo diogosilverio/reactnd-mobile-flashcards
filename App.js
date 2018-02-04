@@ -9,11 +9,14 @@ import FlashStackNavigator from './components/navigators/FlashStackNavigator';
 
 import reducers from './reducers';
 
+import { prepareNotification } from './utils/notification';
+
 export default class App extends Component {
 
   render() {
 
     const store = createStore(reducers);
+    prepareNotification();
 
     return (
       <Provider store={store}>
