@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     ActivityIndicator,
+    Animated,
     StyleSheet,
     Text,
     ScrollView,
@@ -24,10 +25,25 @@ class DeckList extends Component {
         tabBarLabel: 'Decks'
     }
 
+    state = {
+        bounceValue: new Animated.Value(1)
+    }
+
     async componentDidMount() {
         const decks = await services.loadDecks();
         this.props.dispatch(actions.loadDecks(decks));
 
+    }
+
+    navigateToDeck(deck) {
+        const { bounceValue } = this.state;
+
+        Animated.sequence([
+            Animated.timing(bounceValue, { duration: 200, toValue: 1.04 }),
+            Animated.spring(bounceValue, { toValue: 1, friction: 4 })
+        ]).start(() => {
+            this.props.screenProps.rootNavigation.navigate('DeckDetails', { deckKey: deck.name })
+        });
     }
 
     navigateToNewDeck() {
@@ -41,6 +57,8 @@ class DeckList extends Component {
     }
 
     render() {
+
+        const { bounceValue } = this.state;
 
         if (this.props.decks === null) {
             return (
@@ -62,9 +80,11 @@ class DeckList extends Component {
             return (
                 <ScrollView style={styles.container}>
                     {this.props.decks.map((deck) => (
-                        <TouchableOpacity key={deck.name} onPress={() => this.props.screenProps.rootNavigation.navigate('DeckDetails', { deckKey: deck.name })}>
-                            <DeckItem deck={deck} />
-                        </TouchableOpacity>
+                        <Animated.View key={deck.name} style={{ transform: [{ scale: bounceValue }] }}>
+                            <TouchableOpacity onPress={this.navigateToDeck.bind(this, deck)}>
+                                <DeckItem deck={deck} />
+                            </TouchableOpacity>
+                        </Animated.View>
                     ))}
                 </ScrollView>
             )
