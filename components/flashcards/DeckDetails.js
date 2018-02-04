@@ -62,6 +62,22 @@ class DeckDetails extends Component {
         return true;
     }
 
+    startQuiz(deckKey) {
+        const { deck, navigation } = this.props;
+
+        if (deck.cards.length === 0) {
+            Alert.alert(
+                'Empty Deck',
+                'This deck has no cards. Add some to start playing!',
+                [
+                    { text: 'Ok', onPress: () => { } }
+                ]
+            )
+        } else {
+            navigation.navigate('Quiz', { deckKey: deck.name })
+        }
+    }
+
     render() {
         const { deck } = this.props;
         if (typeof deck === 'undefined') {
@@ -97,7 +113,7 @@ class DeckDetails extends Component {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.subSubContainerBtn}>
-                        <TouchableOpacity style={styles.btn} onPress={() => this.props.navigation.navigate('Quiz', { deckKey: deck.name })}>
+                        <TouchableOpacity style={styles.btn} onPress={() => this.startQuiz(deck.name)}>
                             <Text style={styles.btnText}>Start Quiz</Text>
                         </TouchableOpacity>
                     </View>
